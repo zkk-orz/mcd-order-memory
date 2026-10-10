@@ -49,11 +49,13 @@ python scripts/order_helper.py aa --json '{"slot":"部门午餐","paid":71.4,"ow
 ```
 
    返回按比例分摊+取整（默认 0.5 元）+差额归发起人的每人应付，以及微信群收款"按人填金额"逐人照抄清单；`deadline` 给具体日期优于"有空时"。
-3. **record 时带 settlement**（aa 返回的 settlement_shares 原样传入）：
+3. **record 时带 settlement**（直接用 aa 返回的 `settlement` 字段——发起人已预销账 `paid:{owner:true}`，debts 不会把发起人误报为欠款）：
 
 ```bash
-python scripts/memory.py record --json '{...,"prices":{"total":86.4,"paid":71.4},"settlement":{"shares":{"张三":39.4,"李四":19.5,"王五":12.5},"note":"本周五前"}}'
+python scripts/memory.py record --json '{...,"prices":{"total":86.4,"paid":71.4},"calories":{"张三":1078,"李四":391,"王五":500},"settlement":<aa输出的settlement对象>}'
 ```
+
+   **calories 必带**（从 quote 返回的每人 `kcal_total` 逐人抄）——否则月度战报的热量换算是空的（WorkBuddy 实测教训）。预览阶段的 record 没带 settlement 时，用户表达付款意向（"X付了"）先以**同一 ts** 补一笔带 settlement 的 record（upsert 覆盖），再 settle。
 
 4. **销账**：用户说"李四付了" → `settle --ts "<该单ts>" --name 李四`；"都收齐了" → `settle --ts "<ts>" --all`。只在用户提起时执行，不主动追问谁没付。
 

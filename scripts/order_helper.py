@@ -125,7 +125,11 @@ def cmd_aa(args):
         lines.append(f"（取整差额 {diff:+g} 元已并入 {owner}）")
     print(json.dumps({"ok": True, "paid": paid, "round_unit": unit, "diff": diff, "owner": owner,
                       "pay_list": rows, "note_template": "\n".join(lines[0:1]),
-                      "weixin_text": "\n".join(lines), "settlement_shares": {r["name"]: r["pay"] for r in rows}},
+                      "weixin_text": "\n".join(lines),
+                      "settlement_shares": {r["name"]: r["pay"] for r in rows},
+                      "settlement": {"shares": {r["name"]: r["pay"] for r in rows},
+                                     "paid": {owner: True},
+                                     "note": deadline}},
                      ensure_ascii=False, indent=1))
 
 

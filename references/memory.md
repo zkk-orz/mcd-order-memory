@@ -45,8 +45,9 @@
 ## 脚本用法（AI 调用，输出 JSON）
 
 ```bash
-# 记一单（ts 可省略=当前时间；slot/occasion/people 见结构；store 可选记门店；多人 AA 时带 settlement=aa 命令的 settlement_shares）
-python scripts/memory.py record --json '{"slot":"午餐","occasion":"","store":"麦当劳北京团结湖餐厅","people":[{"name":"娃","items":["麦乐鸡 5 块","玉米杯"],"constraints":["不吃酸黄瓜"],"feedback":null}],"prices":{"total":71.0,"paid":55.0},"calories":{"娃":380},"settlement":{"shares":{"娃":27.5},"note":"本周五前"}}'
+# 记一单（ts 可省略=当前时间；slot/occasion/people 见结构；store 可选记门店；calories 必带=quote 的每人 kcal_total；
+# 多人 AA 时带 settlement=aa 命令输出的 settlement 对象，发起人已预销账，debts 不误报）
+python scripts/memory.py record --json '{"slot":"午餐","occasion":"","store":"麦当劳北京团结湖餐厅","people":[{"name":"娃","items":["麦乐鸡 5 块","玉米杯"],"constraints":["不吃酸黄瓜"],"feedback":null}],"prices":{"total":71.0,"paid":55.0},"calories":{"娃":380},"settlement":{"shares":{"娃":27.5},"paid":{"妈":true},"note":"本周五前"}}'
 
 # 单子状态变化（定稿/付款/报销/换品项）→ 用同一 ts 重新 record，自动覆盖旧记录（updated:true），绝不追加新单
 # （WorkBuddy 实测教训：状态变化追加记录会让一单被记 4 次、月报虚高 4 倍）

@@ -161,7 +161,8 @@ def cmd_settle(args):
         print(json.dumps({"ok": False, "error": f"未找到该时间戳的单：{args.ts}"}, ensure_ascii=False)); sys.exit(1)
     st = hit.get("settlement")
     if not st or not st.get("shares"):
-        print(json.dumps({"ok": False, "error": "该单没有分账记录（record 时未带 settlement）"}, ensure_ascii=False)); sys.exit(1)
+        print(json.dumps({"ok": False, "error": "该单没有分账记录——先以同一 ts record 带 settlement"
+                          "（order_helper.py aa 输出的 settlement 结构），再销账"}, ensure_ascii=False)); sys.exit(1)
     paid_map = st.setdefault("paid", {})
     if args.all:
         paid_map.update({n: True for n in st["shares"]})
