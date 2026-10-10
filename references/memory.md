@@ -45,8 +45,8 @@
 ## 脚本用法（AI 调用，输出 JSON）
 
 ```bash
-# 记一单（ts 可省略=当前时间；slot/occasion/people 见结构；store 可选记门店）
-python scripts/memory.py record --json '{"slot":"午餐","occasion":"","store":"麦当劳北京团结湖餐厅","people":[{"name":"娃","items":["麦乐鸡 5 块","玉米杯"],"constraints":["不吃酸黄瓜"],"feedback":null}],"prices":{"total":71.0,"paid":55.0},"calories":{"娃":380}}'
+# 记一单（ts 可省略=当前时间；slot/occasion/people 见结构；store 可选记门店；多人 AA 时带 settlement=aa 命令的 settlement_shares）
+python scripts/memory.py record --json '{"slot":"午餐","occasion":"","store":"麦当劳北京团结湖餐厅","people":[{"name":"娃","items":["麦乐鸡 5 块","玉米杯"],"constraints":["不吃酸黄瓜"],"feedback":null}],"prices":{"total":71.0,"paid":55.0},"calories":{"娃":380},"settlement":{"shares":{"娃":27.5},"note":"本周五前"}}'
 
 # 查画像（历史聚合，含各餐段偏好、忌口、反馈）
 python scripts/memory.py query --name 娃 --slot 下午茶 --days 30
@@ -57,8 +57,20 @@ python scripts/memory.py people
 # 月账单
 python scripts/memory.py ledger --month 2026-10
 
+# AA 销账（用户说"李四付了"/"都收齐了"时执行；只改状态，不代发不代催）
+python scripts/memory.py settle --ts "2026-10-10 14:00:00" --name 李四
+python scripts/memory.py settle --ts "2026-10-10 14:00:00" --all
+
+# 查欠款（多人单出单前先跑一次，有欠款在订单下附一行提示；无人提起时不追问）
+python scripts/memory.py debts [--name 张三]
+
+# 月度战报卡（用户说"生成本月战报/月报"时；卡片默认脱敏——人名与忌口不进卡，只有数字+最高频单品）
+python scripts/memory.py report --month 2026-10
+
 # 删除
 python scripts/memory.py forget --name 张三 --match 薯条
 ```
+
+AA 流程闭环：`order_helper.py aa`（分摊+微信照抄清单）→ `record` 带 settlement（shares=每人应付）→ 用户口头销账 → `settle` → 下次出单 `debts` 自动提示未清欠款。
 
 数据文件：`~/.mcd-order-memory/orders.json`（单维度，唯一数据源，画像查询时聚合）+ `aliases.json`。首次调用自动创建目录。

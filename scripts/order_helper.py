@@ -8,8 +8,16 @@
                {"name": "李四", "items": ["板烧鸡腿堡"]},
                {"name": "王五", "items": ["1+1可乐"]}] }'
 
-输出 JSON：每人每项的价格/卡路里/匹配方式、合计、人均（AA）；未匹配项列入 unmatched 交给 AI 追问。
+输出 JSON：每人每项的价格/卡路里/匹配方式、个人小计、合计、人均（AA）；未匹配项列入 unmatched 交给 AI 追问。
 匹配顺序：精确品名 → 别名（含"品名+补充词"如 1+1可乐）→ 包含匹配。
+
+AA 收款卡（优惠方案选定后，把实付总额按各人原价比例分摊）：
+  python scripts/order_helper.py aa --json '{
+    "paid": 55.0, "owner": "张三", "deadline": "本周五前",
+    "people": [{"name": "张三", "share": 26.5}, {"name": "李四", "share": 28.9}] }'
+
+输出：每人应付（比例分摊+取整+差额归属）、微信群收款"按人填金额"照抄清单、收款说明模板。
+只生成文本，不代发不代催——发起收款与催收动作全在用户手里。
 """
 import argparse
 import json
@@ -72,6 +80,7 @@ def cmd_quote(args):
             total += it["price"]
         kcal = sum(i["kcal"] or 0 for i in row["items"])
         row["kcal_total"] = kcal if kcal else None
+        row["subtotal"] = round(sum(i["price"] for i in row["items"]), 2)
         people_out.append(row)
     n = max(1, len(people_out))
     print(json.dumps({"ok": not unmatched, "slot": order.get("slot", ""), "snapshot_date": snap_date,
@@ -79,10 +88,53 @@ def cmd_quote(args):
                       "unmatched": unmatched}, ensure_ascii=False, indent=1))
 
 
+def _round_to(x, unit):
+    return round(round(x / unit) * unit, 2)
+
+
+def cmd_aa(args):
+    """实付总额按各人原价份额比例分摊，取整到 unit，差额归 owner（默认最大份额者）。"""
+    cfg = json.loads(args.json)
+    paid = float(cfg["paid"])
+    unit = float(args.round)
+    people = cfg["people"]
+    share_sum = sum(p["share"] for p in people)
+    if share_sum <= 0:
+        print(json.dumps({"ok": False, "error": "shares 全为 0，无法分摊"}, ensure_ascii=False))
+        return
+    rows = []
+    for p in people:
+        fair = paid * p["share"] / share_sum
+        rows.append({"name": p["name"], "fair": round(fair, 2), "pay": _round_to(fair, unit)})
+    diff = round(paid - sum(r["pay"] for r in rows), 2)
+    owner = cfg.get("owner") or max(rows, key=lambda r: r["fair"])["name"]
+    for r in rows:
+        if r["name"] == owner:
+            r["pay"] = round(r["pay"] + diff, 2)
+            r["absorbs_diff"] = diff != 0
+    deadline = cfg.get("deadline", "本周五前")
+    slot = cfg.get("slot", "这一餐")
+    lines = [f"【{slot}AA】实付 {paid:g} 元，按原价比例摊，麻烦大家 {deadline} 转我，谢谢～"]
+    lines.append("微信群收款（按人填金额）逐人照抄：")
+    for r in rows:
+        if r["name"] == owner:
+            lines.append(f"  {r['name']}  {r['pay']:g}（发起人自己的那份，收款名单不用含）")
+        else:
+            lines.append(f"  {r['name']}  {r['pay']:g}")
+    if abs(diff) >= 0.01:
+        lines.append(f"（取整差额 {diff:+g} 元已并入 {owner}）")
+    print(json.dumps({"ok": True, "paid": paid, "round_unit": unit, "diff": diff, "owner": owner,
+                      "pay_list": rows, "note_template": "\n".join(lines[0:1]),
+                      "weixin_text": "\n".join(lines), "settlement_shares": {r["name"]: r["pay"] for r in rows}},
+                     ensure_ascii=False, indent=1))
+
+
 def main():
     ap = argparse.ArgumentParser()
     q = ap.add_subparsers(dest="cmd", required=True)
     sp = q.add_parser("quote"); sp.add_argument("--json", required=True); sp.set_defaults(fn=cmd_quote)
+    aa = q.add_parser("aa"); aa.add_argument("--json", required=True)
+    aa.add_argument("--round", default="0.5", help="取整单位（元），默认 0.5；0.01 为精确到分"); aa.set_defaults(fn=cmd_aa)
     args = ap.parse_args()
     args.fn(args)
 

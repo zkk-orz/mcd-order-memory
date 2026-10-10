@@ -6,13 +6,20 @@
   query   --name 娃 [--slot 午餐] [--days 30]     查某人画像（跨餐段聚合或指定餐段）
   people                                           列出所有主体名+别名
   ledger  [--month 2026-10]                        月账单（单列表+合计+省钱战绩）
+  settle  --ts "<时间戳>" --name 娃 | --all        AA 销账（"张三付了/都收齐了"）
+  debts   [--name 张三]                            查欠款（跨单累计，出单前提示用）
+  report  [--month 2026-10]                        月度战报卡（可分享文本，默认脱敏）
   forget  --name 娃 [--match 薯条]                 删除：--match 删匹配条目，无 --match 删整个人
 
 record --json 结构（ts 可省=当前时间）：
   {"ts": "...", "slot": "午餐", "occasion": "部门午餐",
    "people": [{"name": "娃", "items": ["麦乐鸡 5 块"], "constraints": ["不吃酸黄瓜"], "feedback": null}],
    "prices": {"total": 71.0, "paid": 55.0},
-   "calories": {"娃": 380}}
+   "calories": {"娃": 380},
+   "settlement": {"shares": {"娃": 12.5, "妈": 13.0}, "note": "本周五前"}}
+
+settlement 由 order_helper.py aa 命令的 settlement_shares 生成：paid=优惠后实付总额，
+shares=每人应付（已按原价比例分摊+取整+差额归发起人）。销账只改状态，绝不为用户发起收款或催收。
 """
 import argparse
 import json
@@ -23,6 +30,10 @@ from pathlib import Path
 DATA_DIR = Path.home() / ".mcd-order-memory"
 ORDERS_FILE = DATA_DIR / "orders.json"
 ALIASES_FILE = DATA_DIR / "aliases.json"
+
+REPO_URL = "github.com/zkk-orz/mcd-order-memory"
+# 趣味换算基准：营养快照"麦乐鸡5块 = 213 kcal"→ 每块 42.6
+NUGGET_KCAL = 213 / 5
 
 
 def _load(path, default):
@@ -122,6 +133,87 @@ def cmd_ledger(args):
                       "paid": round(paid, 2), "saved": round(total - paid, 2), "rows": rows}, ensure_ascii=False, indent=1))
 
 
+def cmd_settle(args):
+    orders = _load(ORDERS_FILE, [])
+    hit = next((o for o in orders if o.get("ts") == args.ts), None)
+    if hit is None:
+        print(json.dumps({"ok": False, "error": f"未找到该时间戳的单：{args.ts}"}, ensure_ascii=False)); sys.exit(1)
+    st = hit.get("settlement")
+    if not st or not st.get("shares"):
+        print(json.dumps({"ok": False, "error": "该单没有分账记录（record 时未带 settlement）"}, ensure_ascii=False)); sys.exit(1)
+    paid_map = st.setdefault("paid", {})
+    if args.all:
+        paid_map.update({n: True for n in st["shares"]})
+        who = list(st["shares"])
+    else:
+        name = _resolve(args.name)
+        if name not in st["shares"]:
+            print(json.dumps({"ok": False, "error": f"{name} 不在这单的分账名单里",
+                              "shares": st["shares"]}, ensure_ascii=False)); sys.exit(1)
+        paid_map[name] = True
+        who = [name]
+    _save(ORDERS_FILE, orders)
+    remaining = [n for n in st["shares"] if not st["paid"].get(n)]
+    print(json.dumps({"ok": True, "settled": who, "ts": args.ts,
+                      "remaining": remaining}, ensure_ascii=False))
+
+
+def cmd_debts(args):
+    name = _resolve(args.name) if args.name else None
+    debts = {}
+    for o in _load(ORDERS_FILE, []):
+        st = o.get("settlement") or {}
+        for n, amt in (st.get("shares") or {}).items():
+            if (st.get("paid") or {}).get(n):
+                continue
+            n2 = _resolve(n)
+            if name and n2 != name:
+                continue
+            debts.setdefault(n2, []).append({"ts": o["ts"], "slot": o.get("slot", ""),
+                                             "occasion": o.get("occasion", ""), "amount": amt})
+    summary = {n: round(sum(x["amount"] for x in rows), 2) for n, rows in debts.items()}
+    print(json.dumps({"name": name, "debts": {n: {"total": summary[n], "orders": rows} for n, rows in debts.items()},
+                      "grand_total": round(sum(summary.values()), 2)}, ensure_ascii=False, indent=1))
+
+
+def cmd_report(args):
+    month = args.month or datetime.now().strftime("%Y-%m")
+    rows = [o for o in _load(ORDERS_FILE, []) if o.get("ts", "").startswith(month)]
+    total = paid = 0.0
+    people, item_freq, total_kcal = set(), {}, 0
+    for o in rows:
+        pr = o.get("prices", {})
+        total += pr.get("total", 0.0)
+        paid += pr.get("paid", pr.get("total", 0.0))
+        for p in o.get("people", []):
+            people.add(p.get("name", "?"))
+            for it in p.get("items", []):
+                item_freq[it] = item_freq.get(it, 0) + 1
+        total_kcal += sum((o.get("calories") or {}).values())
+    saved = round(total - paid, 2)
+    top = max(item_freq, key=item_freq.get) if item_freq else None
+    n_people = max(1, len(people))
+    nuggets = round(total_kcal / n_people / NUGGET_KCAL) if total_kcal else None
+    lines = [f"🍔 本群麦门月报 · {month}"]
+    if not rows:
+        lines.append("本月还没有记录——点过一单再来生成：）")
+    else:
+        lines.append(f"本月接龙 {len(rows)} 次 · 服务 {len(people)} 人 · 合计 {total:g} 元")
+        if saved > 0:
+            lines.append(f"共省 {saved:g} 元（券+积分+会员价，与账单逐笔可对账）")
+        if top:
+            lines.append(f"本群最爱：{top}（出现 {item_freq[top]} 次）")
+        if nuggets:
+            lines.append(f"人均热量 ≈ {nuggets} 块麦乐鸡 🍗")
+    lines.append(f"—— 由 mcd-order-memory 生成 · {REPO_URL}")
+    # 脱敏纪律：卡片只含数字与最高频单品，人名与忌口一律不进卡
+    print(json.dumps({"month": month, "orders": len(rows), "people": len(people),
+                      "total": round(total, 2), "paid": round(paid, 2), "saved": saved,
+                      "top_item": {"name": top, "count": item_freq.get(top)} if top else None,
+                      "total_kcal": total_kcal, "nuggets_per_person": nuggets,
+                      "card": "\n".join(lines)}, ensure_ascii=False, indent=1))
+
+
 def cmd_forget(args):
     name = _resolve(args.name)
     orders = _load(ORDERS_FILE, [])
@@ -163,6 +255,10 @@ def main():
     q.add_argument("--slot"); q.add_argument("--days", type=int); q.set_defaults(fn=cmd_query)
     sub.add_parser("people").set_defaults(fn=cmd_people)
     l = sub.add_parser("ledger"); l.add_argument("--month"); l.set_defaults(fn=cmd_ledger)
+    st = sub.add_parser("settle"); st.add_argument("--ts", required=True)
+    st.add_argument("--name"); st.add_argument("--all", action="store_true"); st.set_defaults(fn=cmd_settle)
+    dbt = sub.add_parser("debts"); dbt.add_argument("--name"); dbt.set_defaults(fn=cmd_debts)
+    rep = sub.add_parser("report"); rep.add_argument("--month"); rep.set_defaults(fn=cmd_report)
     f = sub.add_parser("forget"); f.add_argument("--name", required=True); f.add_argument("--match"); f.set_defaults(fn=cmd_forget)
     args = ap.parse_args()
     try:

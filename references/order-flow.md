@@ -34,8 +34,28 @@ python scripts/order_helper.py quote --json '{"slot":"午餐","people":[{"name":
 4. **省钱检查**（自动，细则读 savings.md；调用方式按实时数据源三优先级——原生 MCP 直调或脚本）；
 5. **算价**【实时】：`calculate-price`（items 用 **productCode**+quantity；单位**分**→元；takeWayList 呈现取餐方式；items 还支持 couponId 券后实算与 modification 特制选项）。无实时数据源用快照价（实测两源一致可互为校验）；
 6. **呈现**（字面模板见下）；
-7. **用户选定**优惠方案后 → `memory.py record` 记账（实付+营养+记忆条目）；
+7. **用户选定**优惠方案后 → `memory.py record` 记账（实付+营养+记忆条目；多人 AA 时一并带 settlement，见下节）；
 8. （启用下单时）确认门 → `create-order` → 回报订单号。
+
+## AA 收款卡（多人单选定方案后自动附上，不询问）
+
+发起人垫付是平台未解决的痛点（美团拼单至今统一垫付），skill 补"订单→每人应付"的换算与销账，**只生成文本，绝不代发收款、绝不代催**：
+
+1. **出单前**先跑 `python scripts/memory.py debts`——有历史欠款时订单下方附一行（"李四还欠上次 23 元，记得一并收"），没有就静默；
+2. **方案选定后**用实付总额+各人原价小计（quote 的 subtotal）调：
+
+```bash
+python scripts/order_helper.py aa --json '{"slot":"部门午餐","paid":71.4,"owner":"张三","deadline":"本周五前","people":[{"name":"张三","share":48.0},{"name":"李四","share":23.5},{"name":"王五","share":14.9}]}'
+```
+
+   返回按比例分摊+取整（默认 0.5 元）+差额归发起人的每人应付，以及微信群收款"按人填金额"逐人照抄清单；`deadline` 给具体日期优于"有空时"。
+3. **record 时带 settlement**（aa 返回的 settlement_shares 原样传入）：
+
+```bash
+python scripts/memory.py record --json '{...,"prices":{"total":86.4,"paid":71.4},"settlement":{"shares":{"张三":39.4,"李四":19.5,"王五":12.5},"note":"本周五前"}}'
+```
+
+4. **销账**：用户说"李四付了" → `settle --ts "<该单ts>" --name 李四`；"都收齐了" → `settle --ts "<ts>" --all`。只在用户提起时执行，不主动追问谁没付。
 
 ## 输出模板（字面示例，照此格式）
 
@@ -53,6 +73,17 @@ C 积分 2000 兑换麦乐鸡 + 付 50 元（省 21，兑换后剩 3500 分）
 选哪个？（你来定）
 
 📊 娃本周卡路里：这一餐后 1830 kcal
+```
+
+方案选定后再附 AA 收款卡（实付按各人原价比例摊）：
+
+```
+💳 AA 收款卡（发起人：你）
+微信群收款（按人填金额）逐人照抄：
+  张三  39.4（发起人自己的那份，收款名单不用含）
+  李四  19.5
+  王五  12.5
+【部门午餐AA】实付 71.4 元，按原价比例摊，麻烦大家本周五前转我，谢谢～
 ```
 
 ## 外送（家/公司）
