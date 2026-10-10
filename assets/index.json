@@ -1,0 +1,1065 @@
+{
+ "_snapshot": {
+  "date": "2026-10-09",
+  "note": "菜单×营养合并索引；AI 出单冷启动只读本文件"
+ },
+ "items": [
+  {
+   "name": "麦辣鸡腿汉堡三件套",
+   "code": "9900005456",
+   "price": 33.5,
+   "kcal": 921,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "培根安格斯厚牛堡",
+   "code": "511781",
+   "price": 34.5,
+   "kcal": 707,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "阳光橙麦炫酷",
+   "code": "6352",
+   "price": 13.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "芝士安格斯厚牛堡",
+   "code": "511782",
+   "price": 31.5,
+   "kcal": 696,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "【美汁源】“黄金橙橙”",
+   "code": "2430",
+   "price": 13.0,
+   "kcal": 165,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "马苏里拉拉丝芝士条",
+   "code": "521986",
+   "price": 11.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "全明星双人分享餐八件套",
+   "code": "9900011056",
+   "price": 49.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "蘸酱麦麦脆汁鸡",
+   "code": "9900016078",
+   "price": 11.9,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "“我就喜欢”鸡薯双全盒",
+   "code": "9900016076",
+   "price": 15.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "蘸酱炸鸡",
+   "code": "9900016077",
+   "price": 11.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰芝士棒鸡腿堡三件套",
+   "code": "9900016075",
+   "price": 29.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰鸡腿堡三件套",
+   "code": "9900016073",
+   "price": 26.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦香鱼套餐",
+   "code": "9900005460",
+   "price": 33.0,
+   "kcal": 761,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "麦香鱼"
+   ]
+  },
+  {
+   "name": "板烧鸡腿堡三件套",
+   "code": "9900005462",
+   "price": 34.5,
+   "kcal": 827,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "纯牛奶(盒装)",
+   "code": "3755",
+   "price": 11.0,
+   "kcal": 180,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "双层吉士汉堡套餐",
+   "code": "9900005464",
+   "price": 34.0,
+   "kcal": 865,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "双吉套餐",
+    "双吉"
+   ]
+  },
+  {
+   "name": "人气超值四件套随心选",
+   "code": "9900004236",
+   "price": 28.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "纯悦",
+   "code": "3757",
+   "price": 7.5,
+   "kcal": 0,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "巨无霸三件套",
+   "code": "9900005466",
+   "price": 37.5,
+   "kcal": 949,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "“葱不求人“按摩捶痒痒挠",
+   "code": "521914",
+   "price": 14.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "牛奶",
+   "code": "510041",
+   "price": 19.0,
+   "kcal": 129,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "100% 苹果汁(盒装)",
+   "code": "6362",
+   "price": 11.5,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "吉士汉堡包套餐",
+   "code": "9900005449",
+   "price": 26.5,
+   "kcal": 730,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "吉士汉堡包"
+   ]
+  },
+  {
+   "name": "酥酥多笋卷三件套",
+   "code": "9900015008",
+   "price": 32.0,
+   "kcal": 778,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "雪碧",
+   "code": "3010",
+   "price": 9.5,
+   "kcal": 105,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "鱼牛汉堡四件套随心选",
+   "code": "9900010110",
+   "price": 32.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "培根蔬萃双层牛堡",
+   "code": "1106",
+   "price": 25.0,
+   "kcal": 442,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "巨无霸",
+   "code": "1100",
+   "price": 26.5,
+   "kcal": 513,
+   "kcal_note": null,
+   "aliases": [
+    "big mac"
+   ]
+  },
+  {
+   "name": "麦辣鸡翅4块套餐",
+   "code": "9900005451",
+   "price": 36.5,
+   "kcal": 650,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "麦辣鸡翅4块"
+   ]
+  },
+  {
+   "name": "麦香鸡套餐",
+   "code": "9900005453",
+   "price": 27.5,
+   "kcal": 805,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "麦香鸡"
+   ]
+  },
+  {
+   "name": "鸡肉堡单品精选",
+   "code": "9900008746",
+   "price": 23.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "新地",
+   "code": "9900008745",
+   "price": 13.0,
+   "kcal": 282,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "牛肉堡单品精选",
+   "code": "9900008747",
+   "price": 14.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "怡泉+C",
+   "code": "515520",
+   "price": 11.5,
+   "kcal": 110,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "双层吉士汉堡",
+   "code": "1120",
+   "price": 23.0,
+   "kcal": 429,
+   "kcal_note": null,
+   "aliases": [
+    "双吉"
+   ]
+  },
+  {
+   "name": "韩式烟熏芝士风味酱",
+   "code": "521966",
+   "price": 3.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "蘸酱韩式甜辣酱鸡块",
+   "code": "9900016096",
+   "price": 11.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "可乐",
+   "code": "9900008751",
+   "price": 9.5,
+   "kcal": 147,
+   "kcal_note": null,
+   "aliases": [
+    "可口可乐"
+   ]
+  },
+  {
+   "name": "薄皮V翅双拼十翅",
+   "code": "9900006332",
+   "price": 49.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "派",
+   "code": "9900008752",
+   "price": 8.5,
+   "kcal": 232,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "经典麦旋风",
+   "code": "9900008754",
+   "price": 15.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "培根蔬萃双层牛堡三件套",
+   "code": "9900005468",
+   "price": 36.0,
+   "kcal": 878,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "脆脆薯条",
+   "code": "514782",
+   "price": 16.0,
+   "kcal": 279,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "安格斯厚牛堡四件套随心选",
+   "code": "9900006957",
+   "price": 37.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "厚薯泥培根肉酱双牛堡买一送一",
+   "code": "9900015704",
+   "price": 28.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "厚薯泥培根肉酱双牛堡",
+   "code": "521737",
+   "price": 30.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦乐鸡",
+   "code": "1401",
+   "price": 14.0,
+   "kcal": 213,
+   "kcal_note": null,
+   "aliases": [
+    "麦乐鸡块"
+   ]
+  },
+  {
+   "name": "心形薯饼5块",
+   "code": "9900016082",
+   "price": 15.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "板烧鸡腿堡",
+   "code": "1406",
+   "price": 23.5,
+   "kcal": 391,
+   "kcal_note": null,
+   "aliases": [
+    "板烧",
+    "板烧鸡腿堡"
+   ]
+  },
+  {
+   "name": "双层深海鳕鱼堡三件套",
+   "code": "9900005413",
+   "price": 35.0,
+   "kcal": 921,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "咖啡阿芙佳朵",
+   "code": "514851",
+   "price": 15.0,
+   "kcal": 139,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰鸡腿堡四件套",
+   "code": "9900016309",
+   "price": 29.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "“泷”运当头四件套",
+   "code": "9900015856",
+   "price": 91.7,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "BFF四宫格小食盘",
+   "code": "9900015730",
+   "price": 40.3,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰美味四件套",
+   "code": "9900016311",
+   "price": 29.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰芝士棒鸡腿堡四件套",
+   "code": "9900016310",
+   "price": 32.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "那么大鸡排（椒盐风味）",
+   "code": "521156",
+   "price": 14.0,
+   "kcal": 385,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦乐鸡套餐",
+   "code": "9900004835",
+   "price": 25.0,
+   "kcal": 649,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "麦乐鸡"
+   ]
+  },
+  {
+   "name": "燕麦奶",
+   "code": "510488",
+   "price": 21.0,
+   "kcal": 132,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "不素之霸双层牛堡",
+   "code": "4648",
+   "price": 26.5,
+   "kcal": 493,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "双层深海鳕鱼堡",
+   "code": "9900003586",
+   "price": 24.0,
+   "kcal": 485,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "板烧鸡腿堡四件套",
+   "code": "9900000890",
+   "price": 28.0,
+   "kcal": 827,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "蘸酱BFF四宫格小食盘",
+   "code": "9900015729",
+   "price": 43.3,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "蓝莓爆爆珠麦旋风",
+   "code": "521950",
+   "price": 16.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "人气经典随心配",
+   "code": "9900013304",
+   "price": 14.9,
+   "kcal": 500,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "1+1",
+    "1+1随心配",
+    "随心配1+1"
+   ]
+  },
+  {
+   "name": "韩式甜辣酱鸡块8块",
+   "code": "9900015726",
+   "price": 19.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "灰焰圆筒",
+   "code": "521951",
+   "price": 5.0,
+   "kcal": 95,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "酥脆无双套餐",
+   "code": "9900011126",
+   "price": 20.0,
+   "kcal": 650,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "酥脆无双"
+   ]
+  },
+  {
+   "name": "龙焰鸡腿堡",
+   "code": "521952",
+   "price": 24.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "大堡口福三件套",
+   "code": "9900015602",
+   "price": 22.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "龙焰芝士棒鸡腿堡",
+   "code": "521953",
+   "price": 27.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "日式鲜磨山葵酱",
+   "code": "521799",
+   "price": 3.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "“堡”你欢乐套餐",
+   "code": "9900011128",
+   "price": 28.0,
+   "kcal": 650,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "“堡”你欢乐"
+   ]
+  },
+  {
+   "name": "麦当劳联名复古棒球帽",
+   "code": "521954",
+   "price": 34.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "高达吉士双牛堡",
+   "code": "521316",
+   "price": 22.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "“苹”水相“鱼”套餐",
+   "code": "9900011121",
+   "price": 36.0,
+   "kcal": 650,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "“苹”水相“鱼”"
+   ]
+  },
+  {
+   "name": "精选超值随心配",
+   "code": "9900015568",
+   "price": 13.9,
+   "kcal": 500,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "精选1+1"
+   ]
+  },
+  {
+   "name": "“辣”么快乐套餐",
+   "code": "9900011123",
+   "price": 24.0,
+   "kcal": 650,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": [
+    "“辣”么快乐"
+   ]
+  },
+  {
+   "name": "柠檬脆脆麦旋风",
+   "code": "521836",
+   "price": 16.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦辣鸡翅",
+   "code": "1700",
+   "price": 14.5,
+   "kcal": 224,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "厚薯泥培根肉酱双牛堡两件套",
+   "code": "9900015450",
+   "price": 25.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "巨无霸四件套",
+   "code": "9900000888",
+   "price": 32.0,
+   "kcal": 949,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "不素之霸双层牛堡四件套",
+   "code": "9900000886",
+   "price": 32.0,
+   "kcal": 929,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "酥酥多笋卷四件套",
+   "code": "9900000884",
+   "price": 28.0,
+   "kcal": 778,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "培根蔬萃双层牛堡四件套",
+   "code": "9900000885",
+   "price": 32.0,
+   "kcal": 878,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "薯条",
+   "code": "4810",
+   "price": 14.5,
+   "kcal": 289,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "燕麦奶铁",
+   "code": "510479",
+   "price": 9.9,
+   "kcal": 132,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "芝士安格斯厚牛堡四件套",
+   "code": "9900000882",
+   "price": 37.0,
+   "kcal": 1132,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "不素之霸双层牛堡三件套",
+   "code": "9900005411",
+   "price": 37.5,
+   "kcal": 929,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "培根安格斯厚牛堡四件套",
+   "code": "9900000881",
+   "price": 37.0,
+   "kcal": 1143,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "精选单人餐三件套",
+   "code": "9900004064",
+   "price": 34.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦辣鸡腿汉堡",
+   "code": "1440",
+   "price": 22.5,
+   "kcal": 485,
+   "kcal_note": null,
+   "aliases": [
+    "麦辣",
+    "麦辣鸡腿堡",
+    "麦辣堡"
+   ]
+  },
+  {
+   "name": "奶香大米派",
+   "code": "521922",
+   "price": 9.5,
+   "kcal": 180,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "阳光柠檬红茶",
+   "code": "515280",
+   "price": 9.5,
+   "kcal": 117,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "鱼排堡开心乐园餐",
+   "code": "9900016058",
+   "price": 24.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦乐鸡开心乐园餐",
+   "code": "9900016056",
+   "price": 25.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "汉堡开心乐园餐",
+   "code": "9900016057",
+   "price": 23.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦当劳素龙限定饼干",
+   "code": "521770",
+   "price": 2.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "开心亲子双人餐",
+   "code": "9900016055",
+   "price": 59.5,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "“苹板”支撑Pro套餐",
+   "code": "9900009242",
+   "price": 39.5,
+   "kcal": 912,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "“苹板”支撑Pro"
+   ]
+  },
+  {
+   "name": "浓缩咖啡",
+   "code": "507389",
+   "price": 15.0,
+   "kcal": 13,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "牛气满满套餐",
+   "code": "9900009245",
+   "price": 34.5,
+   "kcal": 931,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": [
+    "牛气满满"
+   ]
+  },
+  {
+   "name": "卡布奇诺",
+   "code": "507387",
+   "price": 21.0,
+   "kcal": 167,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "双层深海鳕鱼堡四件套",
+   "code": "9900000893",
+   "price": 32.0,
+   "kcal": 921,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "浓浓燕麦黑巧（冰/热）",
+   "code": "515955",
+   "price": 15.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "BFF四宫格小食盘双人餐",
+   "code": "9900005321",
+   "price": 62.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦辣鸡腿堡四件套",
+   "code": "9900000891",
+   "price": 28.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "圆筒冰淇淋",
+   "code": "515837",
+   "price": 5.0,
+   "kcal": 93,
+   "kcal_note": null,
+   "aliases": [
+    "圆筒",
+    "甜筒"
+   ]
+  },
+  {
+   "name": "酥酥多笋卷",
+   "code": "521816",
+   "price": 21.0,
+   "kcal": 342,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "【美汁源】“多汁柠柠”",
+   "code": "521817",
+   "price": 12.0,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "苹果片",
+   "code": "6102",
+   "price": 7.0,
+   "kcal": 32,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "培根安格斯厚牛堡三件套",
+   "code": "9900005428",
+   "price": 45.5,
+   "kcal": 1143,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "泷泷星愿四件套",
+   "code": "9900015902",
+   "price": 39.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦香鸡",
+   "code": "1450",
+   "price": 16.5,
+   "kcal": 369,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "薄皮焦香V翅",
+   "code": "520445",
+   "price": 15.5,
+   "kcal": 192,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "鲜萃咖啡",
+   "code": "520689",
+   "price": 9.5,
+   "kcal": 13,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦咖啡™奶铁",
+   "code": "507409",
+   "price": 13.9,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "锡兰红茶",
+   "code": "3505",
+   "price": 10.5,
+   "kcal": 2,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦香鱼",
+   "code": "1600",
+   "price": 22.0,
+   "kcal": 325,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦咖啡™美式",
+   "code": "507411",
+   "price": 11.9,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "学生专享饮品随心选",
+   "code": "9900003538",
+   "price": 10.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "学生专享汉堡小食随心选",
+   "code": "9900003537",
+   "price": 28.0,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "芝士安格斯厚牛堡三件套",
+   "code": "9900005430",
+   "price": 42.5,
+   "kcal": 1132,
+   "kcal_note": "套餐按组成估算（主品+中薯+中可乐）",
+   "aliases": []
+  },
+  {
+   "name": "玉米杯",
+   "code": "4437",
+   "price": 13.0,
+   "kcal": 87,
+   "kcal_note": null,
+   "aliases": []
+  },
+  {
+   "name": "麦麦脆汁鸡1块",
+   "code": "9900005432",
+   "price": 15.0,
+   "kcal": 120,
+   "kcal_note": "营养表未收录，按同类估算",
+   "aliases": []
+  },
+  {
+   "name": "浓浓黑巧（冰/热）",
+   "code": "515946",
+   "price": 13.9,
+   "kcal": null,
+   "kcal_note": null,
+   "aliases": []
+  }
+ ]
+}
