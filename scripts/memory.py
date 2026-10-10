@@ -58,10 +58,20 @@ def cmd_record(args):
     order.setdefault("occasion", "")
     order.setdefault("people", [])
     orders = _load(ORDERS_FILE, [])
-    orders.append(order)
+    # 同 ts 覆盖（upsert）：单子状态变化（定稿/付款/报销/换品项）用同一 ts 重记，
+    # 覆盖旧记录而非追加——防"一单被记 4 次"的台账虚高（WorkBuddy 实测教训）
+    updated = False
+    for i, o in enumerate(orders):
+        if o.get("ts") == order["ts"]:
+            orders[i] = order
+            updated = True
+            break
+    if not updated:
+        orders.append(order)
     _save(ORDERS_FILE, orders)
     # 别名归一提示：同名不同写不在此处合并，由 AI 判断后写 aliases
-    print(json.dumps({"ok": True, "recorded": order["ts"], "people": [p.get("name") for p in order["people"]] or [order["occasion"]]}, ensure_ascii=False))
+    print(json.dumps({"ok": True, "recorded": order["ts"], "updated": updated,
+                      "people": [p.get("name") for p in order["people"]] or [order["occasion"]]}, ensure_ascii=False))
 
 
 def _resolve(name):
@@ -118,17 +128,28 @@ def cmd_people(args):
     print(json.dumps({"people": names, "aliases": _load(ALIASES_FILE, {})}, ensure_ascii=False, indent=1))
 
 
+def _pr_total(pr):
+    return pr.get("total") or 0.0
+
+
+def _pr_paid(pr):
+    # paid 显式为 null 时 .get 不走默认值（dict 语义），必须显式判 None（WorkBuddy 实测崩溃点）
+    p = pr.get("paid")
+    return p if p is not None else _pr_total(pr)
+
+
 def cmd_ledger(args):
     month = args.month or datetime.now().strftime("%Y-%m")
     rows, total, paid = [], 0.0, 0.0
     for o in _load(ORDERS_FILE, []):
-        if not o["ts"].startswith(month):
+        if not o.get("ts", "").startswith(month):
             continue
-        pr = o.get("prices", {})
-        total += pr.get("total", 0.0)
-        paid += pr.get("paid", pr.get("total", 0.0))
-        rows.append({"ts": o["ts"], "slot": o.get("slot", ""), "who": [p.get("name") for p in o.get("people", [])] or [o.get("occasion")],
-                     "total": pr.get("total"), "paid": pr.get("paid", pr.get("total"))})
+        pr = o.get("prices") or {}
+        t, p = _pr_total(pr), _pr_paid(pr)
+        total += t
+        paid += p
+        rows.append({"ts": o.get("ts", ""), "slot": o.get("slot", ""), "who": [p2.get("name") for p2 in o.get("people", [])] or [o.get("occasion")],
+                     "total": t, "paid": p})
     print(json.dumps({"month": month, "orders": len(rows), "total": round(total, 2),
                       "paid": round(paid, 2), "saved": round(total - paid, 2), "rows": rows}, ensure_ascii=False, indent=1))
 
@@ -169,7 +190,7 @@ def cmd_debts(args):
             n2 = _resolve(n)
             if name and n2 != name:
                 continue
-            debts.setdefault(n2, []).append({"ts": o["ts"], "slot": o.get("slot", ""),
+            debts.setdefault(n2, []).append({"ts": o.get("ts", ""), "slot": o.get("slot", ""),
                                              "occasion": o.get("occasion", ""), "amount": amt})
     summary = {n: round(sum(x["amount"] for x in rows), 2) for n, rows in debts.items()}
     print(json.dumps({"name": name, "debts": {n: {"total": summary[n], "orders": rows} for n, rows in debts.items()},
@@ -182,9 +203,9 @@ def cmd_report(args):
     total = paid = 0.0
     people, item_freq, total_kcal = set(), {}, 0
     for o in rows:
-        pr = o.get("prices", {})
-        total += pr.get("total", 0.0)
-        paid += pr.get("paid", pr.get("total", 0.0))
+        pr = o.get("prices") or {}
+        total += _pr_total(pr)
+        paid += _pr_paid(pr)
         for p in o.get("people", []):
             people.add(p.get("name", "?"))
             for it in p.get("items", []):
