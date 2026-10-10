@@ -70,6 +70,9 @@ python scripts/memory.py debts [--name 张三]
 
 # 月度战报卡（用户说"生成本月战报/月报"时；卡片默认脱敏——人名与忌口不进卡，只有数字+最高频单品）
 python scripts/memory.py report --month 2026-10
+# 网页版战报（用户要"好看点的/能截图的"时）：生成 mcd-report-<月>.html 本地文件，红黄麦门主题；
+# 默认同样脱敏，--names 才带个人战绩表（含 AA 结清状态）——人名展示交给用户显式选择
+python scripts/memory.py report --month 2026-10 --html [--names]
 
 # 删除
 python scripts/memory.py forget --name 张三 --match 薯条

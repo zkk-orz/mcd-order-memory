@@ -198,6 +198,97 @@ def cmd_debts(args):
                       "grand_total": round(sum(summary.values()), 2)}, ensure_ascii=False, indent=1))
 
 
+_HTML_TMPL = """<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦门月报 · {month}</title>
+<style>
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{ font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+         background: #fff8f0; color: #2b2b2b; padding: 28px 16px 48px; line-height: 1.6; }}
+  .wrap {{ max-width: 760px; margin: 0 auto; }}
+  .hero {{ background: linear-gradient(135deg, #DA291C 0%, #e0412f 100%); border-radius: 20px;
+          padding: 30px 28px; color: #fff; box-shadow: 0 10px 30px rgba(218,41,28,.25);
+          position: relative; overflow: hidden; }}
+  .hero::after {{ content: "🍔"; position: absolute; right: -10px; top: -20px;
+                 font-size: 140px; opacity: .12; transform: rotate(-12deg); }}
+  .hero .kicker {{ font-size: 14px; letter-spacing: 3px; opacity: .9; }}
+  .hero h1 {{ font-size: 34px; margin: 6px 0 4px; font-weight: 800; }}
+  .hero .sub {{ font-size: 14px; opacity: .92; }}
+  .stats {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }}
+  .stat {{ background: #fff; border: 2px solid #ffd9a8; border-radius: 16px; padding: 16px 10px;
+          text-align: center; box-shadow: 0 4px 14px rgba(218,41,28,.06); }}
+  .stat .num {{ font-size: 26px; font-weight: 800; color: #DA291C; }}
+  .stat .lbl {{ font-size: 13px; color: #8a6a4a; margin-top: 2px; }}
+  .sec {{ background: #fff; border-radius: 18px; padding: 22px 24px; margin: 18px 0;
+         box-shadow: 0 4px 16px rgba(0,0,0,.05); }}
+  .sec h2 {{ font-size: 19px; color: #DA291C; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }}
+  .sec h2::before {{ content: ""; width: 6px; height: 20px; background: #FFC72C; border-radius: 3px; }}
+  table {{ width: 100%; border-collapse: collapse; font-size: 14px; }}
+  th, td {{ padding: 11px 10px; text-align: left; border-bottom: 1px solid #f0e4d4; }}
+  th {{ color: #a06a2c; font-weight: 700; font-size: 12.5px; }}
+  .pill {{ display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 12px; font-weight: 700; }}
+  .pill.paid {{ background: #e7f7ec; color: #1f8a43; }}
+  .pill.due {{ background: #fff3d6; color: #b8801a; }}
+  .price {{ color: #DA291C; font-weight: 800; }}
+  .note {{ background: #fff8e8; border-left: 4px solid #FFC72C; padding: 12px 16px;
+          border-radius: 8px; font-size: 14px; color: #7a5a2a; }}
+  .footer {{ text-align: center; font-size: 12px; color: #b09a82; margin-top: 26px; }}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="kicker">MCD ORDER MEMORY</div>
+    <h1>🍔 本群麦门月报</h1>
+    <div class="sub">{month} · {orders} 次接龙 · 服务 {people} 人{debt_note}</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="num">{total:g}<small> 元</small></div><div class="lbl">合计消费</div></div>
+    <div class="stat"><div class="num">{saved:g}<small> 元</small></div><div class="lbl">共省（券+积分+会员价）</div></div>
+    <div class="stat"><div class="num">{nuggets}<small> 块</small></div><div class="lbl">人均热量 ≈ 麦乐鸡</div></div>
+    <div class="stat"><div class="num">{orders}</div><div class="lbl">本月单数</div></div>
+  </div>
+  <div class="sec">
+    <h2>本群最爱</h2>
+    <div class="note">{top_line}</div>
+  </div>{names_sec}
+  <div class="footer">—— 由 <b>mcd-order-memory</b> 生成 · 数字与账单逐笔可对账 · {REPO_URL}</div>
+</div>
+</body>
+</html>
+"""
+
+
+def _write_html(month, agg, detail, show_names):
+    """生成网页版战报（本地文件，不联网）。默认脱敏：人名不进页面；--names 才带个人战绩表。"""
+    names_sec = ""
+    if show_names and detail:
+        rows_html = "".join(
+            f"<tr><td>{d['name']}</td><td>{'、'.join(d['items'])}</td>"
+            f"<td class='price'>{d['amount']:g} 元</td>"
+            f"<td><span class='pill {'paid' if d['paid'] else 'due'}'>"
+            f"{'已结清' if d['paid'] else '待收'}</span></td></tr>"
+            for d in detail)
+        names_sec = (f"\n  <div class=\"sec\">\n    <h2>战绩表</h2>\n"
+                     f"    <table><tr><th>成员</th><th>常点</th><th>本月应付</th><th>状态</th></tr>"
+                     f"{rows_html}</table>\n  </div>")
+    debt_note = ""
+    if agg.get("debt_total"):
+        debt_note = f" · 待收 {agg['debt_total']:g} 元"
+    top_line = (f"{agg['top_item']['name']}（出现 {agg['top_item']['count']} 次）"
+                if agg["top_item"] else "本月还没有记录——点过一单再来生成：）")
+    html = _HTML_TMPL.format(month=month, orders=agg["orders"], people=agg["people"],
+                             total=agg["total"], saved=max(agg["saved"], 0),
+                             nuggets=agg["nuggets_per_person"] or 0, top_line=top_line,
+                             names_sec=names_sec, debt_note=debt_note, REPO_URL=REPO_URL)
+    path = Path(f"mcd-report-{month}.html")
+    path.write_text(html, encoding="utf-8")
+    return str(path)
+
+
 def cmd_report(args):
     month = args.month or datetime.now().strftime("%Y-%m")
     rows = [o for o in _load(ORDERS_FILE, []) if o.get("ts", "").startswith(month)]
@@ -228,12 +319,37 @@ def cmd_report(args):
         if nuggets:
             lines.append(f"人均热量 ≈ {nuggets} 块麦乐鸡 🍗")
     lines.append(f"—— 由 mcd-order-memory 生成 · {REPO_URL}")
+    # 个人明细（仅 --names 用于 HTML 战绩表；文本卡与默认 HTML 均不进人名——脱敏纪律）
+    detail = {}
+    for o in rows:
+        st = o.get("settlement") or {}
+        for p in o.get("people", []):
+            n = p.get("name", "?")
+            d = detail.setdefault(n, {"name": n, "items": [], "amount": 0.0, "paid": True})
+            d["items"].extend(p.get("items", []))
+            amt = (st.get("shares") or {}).get(n)
+            if amt is not None:
+                d["amount"] = round(d["amount"] + amt, 2)
+                if not (st.get("paid") or {}).get(n):
+                    d["paid"] = False
+    debt_total = round(sum(d["amount"] for d in detail.values() if not d["paid"]), 2)
+    detail = sorted(detail.values(), key=lambda d: -d["amount"])
+    # 常点只显示频次 top3，避免长尾刷屏
+    for d in detail:
+        cnt = {}
+        for it in d["items"]:
+            cnt[it] = cnt.get(it, 0) + 1
+        d["items"] = [i for i, _ in sorted(cnt.items(), key=lambda kv: -kv[1])[:3]]
+    agg = {"orders": len(rows), "people": len(people), "total": round(total, 2),
+           "saved": saved, "top_item": {"name": top, "count": item_freq.get(top)} if top else None,
+           "nuggets_per_person": nuggets, "debt_total": debt_total or None}
+    out = {"month": month, **agg, "paid": round(paid, 2),
+           "total_kcal": total_kcal, "card": "\n".join(lines)}
+    if args.html:
+        out["html_path"] = _write_html(month, agg, detail, show_names=args.names)
+        out["html_note"] = "默认脱敏（无人名）" + ("，已含战绩表（--names）" if args.names else "；加 --names 可含个人战绩表")
     # 脱敏纪律：卡片只含数字与最高频单品，人名与忌口一律不进卡
-    print(json.dumps({"month": month, "orders": len(rows), "people": len(people),
-                      "total": round(total, 2), "paid": round(paid, 2), "saved": saved,
-                      "top_item": {"name": top, "count": item_freq.get(top)} if top else None,
-                      "total_kcal": total_kcal, "nuggets_per_person": nuggets,
-                      "card": "\n".join(lines)}, ensure_ascii=False, indent=1))
+    print(json.dumps(out, ensure_ascii=False, indent=1))
 
 
 def cmd_forget(args):
@@ -280,7 +396,10 @@ def main():
     st = sub.add_parser("settle"); st.add_argument("--ts", required=True)
     st.add_argument("--name"); st.add_argument("--all", action="store_true"); st.set_defaults(fn=cmd_settle)
     dbt = sub.add_parser("debts"); dbt.add_argument("--name"); dbt.set_defaults(fn=cmd_debts)
-    rep = sub.add_parser("report"); rep.add_argument("--month"); rep.set_defaults(fn=cmd_report)
+    rep = sub.add_parser("report"); rep.add_argument("--month")
+    rep.add_argument("--html", action="store_true", help="同时生成网页版战报 mcd-report-<月>.html（本地文件）")
+    rep.add_argument("--names", action="store_true", help="网页版含个人战绩表（默认脱敏不进人名）")
+    rep.set_defaults(fn=cmd_report)
     f = sub.add_parser("forget"); f.add_argument("--name", required=True); f.add_argument("--match"); f.set_defaults(fn=cmd_forget)
     args = ap.parse_args()
     try:

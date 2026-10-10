@@ -38,7 +38,7 @@ description: 麦当劳点餐记忆中枢——替你记住所有人的胃口、�
 
 - 多人单方案选定后**自动附 AA 收款卡**（`order_helper.py aa`：实付按原价比例摊+微信群收款逐人照抄清单），不询问；出单前 `memory.py debts` 查历史欠款，有则附一行提示；
 - 用户说"XX 付了/都收齐了"→ `memory.py settle` 销账；无人提起不追问；
-- 用户说"生成本月战报/月报"→ `memory.py report` 出战报卡（默认脱敏：人名与忌口不进卡，只发点餐群用，分享与否用户自己定）。
+- 用户说"生成本月战报/月报"→ `memory.py report` 出战报卡（默认脱敏：人名与忌口不进卡，只发点餐群用，分享与否用户自己定）；用户要看网页版 → `report --html`（默认脱敏，`--names` 才带个人战绩表），生成 `mcd-report-<月>.html` 本地文件（红黄麦门主题，适合截图分享）。
 
 ## 实时数据源三优先级（先探测再干活，选最高可用档）
 
@@ -60,7 +60,7 @@ description: 麦当劳点餐记忆中枢——替你记住所有人的胃口、�
 | 卡路里统计/月度营养纠偏 | 读 references/nutrition.md |
 | 出单速算（解析后第一步） | `python scripts/order_helper.py quote --json '{"slot":"午餐","people":[{"name":"张三","items":["双吉套餐"]}]}'` |
 | AA 收款卡（多人单方案选定后） | `python scripts/order_helper.py aa --json '{"slot":"部门午餐","paid":71.4,"owner":"张三","people":[{"name":"张三","share":48.0}]}'` |
-| 记忆存取/销账/欠款/战报 | `python scripts/memory.py record/query/people/ledger/settle/debts/report/forget ...` |
+| 记忆存取/销账/欠款/战报 | `python scripts/memory.py record/query/people/ledger/settle/debts/report [--html --names]/forget ...` |
 | 脚本层实时调用（三优先级第 2 档） | `python scripts/mcp_client.py call <tool> '<json参数>'` |
 | 菜单/营养/活动数据 | 直接读 assets/*.json（含快照日期，勿再调 MCP） |
 
