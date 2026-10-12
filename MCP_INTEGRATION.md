@@ -70,3 +70,20 @@ query-promotions / query-meal-assistance（企业团餐 beType=6 通道：满减
 - 上述标注 ✅ 的工具均于 2026-10-09 使用真实 Token 逐一调用验证（只读查询）；
 - 标注 ⚠️ 的 6 个写操作按官方 inputSchema 实现，**未经真实交易验证**（参赛开发期不产生真实扣费交易）；执行侧有脚本级强制确认门（`mcp_client.py` 缺 `--i-confirm` 直接拒绝，实测拦截有效）；
 - 本仓库不含真实 Token；`mcp-config.example.json` 仅环境变量占位符。
+
+## 接入踩坑速查（全部真实实测，2026-10）
+
+给任何想接麦当劳 MCP 的开发者——这些坑我们替你踩过了：
+
+| # | 坑 | 实测结论 |
+|---|---|---|
+| 1 | **calculate-price 传 `code` 得总价 0** | items 必须用 **productCode**（传 `code` 字段会被静默忽略）；单位是**分**；还支持 `couponId` 直传算券后实付、`modification` 特制项——不靠"满减"文案自己心算 |
+| 2 | **query-nearby-stores 报"缺少参数"** | 必填是 **beType + searchType**（searchType=2 时 city 必填，keyword 只是辅助）；返回 60003 = 门店打烊，按 businessStatus=true 换店 |
+| 3 | **query-store-coupons 必填三件套** | storeCode + orderType + beType；返回的 productCode 与菜单 code 同格式，可直接匹配购物车做比价 |
+| 4 | **mall-create-order 文档/实际不符** | 实测 inputSchema：**skuId + spuCategory 必填**（"1"虚拟/"2"实体+addressId），不是坊间流传的 shopId |
+| 5 | **mall-points-products 返回过期券** | 多条 `status=2`（上架）但 `downTime` 已是过去时间（实测见到 2026-03/06 的），**消费端必须按 downTime 二次过滤**，否则会引导用户兑换已下架商品 |
+| 6 | **返回格式是混合体** | 多数工具 content = "说明文本 + 内嵌业务 JSON（{"success","data"}）"，解析须提取内嵌 JSON——本仓库 `scripts/mcp_client.py` 的 `extract_payload()`（零依赖，raw_decode 扫描）可直接抄 |
+| 7 | **积分字段名** | query-my-account：availablePoint（可用）/accumulativePoint（累计）/expiredPoint（已过期）/currentMouthExpirePoint（本月将过期）——临期提醒字段齐备 |
+| 8 | **create-order 到店单** | 必传 takeWayCode（取餐方式），合法值来自 calculate-price 返回的 takeWayList——先算价后下单是硬顺序 |
+
+> 35 个工具的完整实测记录、必填参数与返回结构速查见 [references/l1-tools.md](./references/l1-tools.md)（19 个查询工具逐个实测）与本文档上文。

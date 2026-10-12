@@ -112,7 +112,7 @@ export MCD_MCP_TOKEN=你的token
 
 ## MCP 使用说明
 
-实际使用的麦当劳 MCP Server、35 个工具中的 30 个、调用流程与实测状态，详见 [MCP_INTEGRATION.md](./MCP_INTEGRATION.md)。**诚实声明**：全部查询链路经真实调用验证；6 个写操作工具按官方 schema 实现（含确认门），**未经真实交易验证**——使用前请知悉。
+实际使用的麦当劳 MCP Server、35 个工具中的 30 个、调用流程与实测状态，详见 [MCP_INTEGRATION.md](./MCP_INTEGRATION.md)——文末有**「接入踩坑速查」**（productCode vs code、必填参数、过期券过滤等 8 个真实踩坑，接麦当劳 MCP 的开发者可直接抄）。**诚实声明**：全部查询链路经真实调用验证；6 个写操作工具按官方 schema 实现（含确认门），**未经真实交易验证**——使用前请知悉。
 
 ## 免责
 
