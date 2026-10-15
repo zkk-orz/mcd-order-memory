@@ -46,7 +46,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--city", required=True, help="基准门店城市，如 北京市")
     ap.add_argument("--keyword", required=True, help="基准门店关键词，如 王府井")
+    ap.add_argument("--allow-partial", action="store_true",
+                    help="跳过时段护栏（明知菜单不全仍要抓，如只更新活动日历）")
     args = ap.parse_args()
+
+    # 时段护栏（2026-10-15 实测教训：早上抓的 query-meals 只有早餐菜单，品项 126→78、
+    # 全部正餐品缺失，快照若入库会导致出单匹配瘫痪）——麦当劳早餐时段约 05:00-10:30
+    from datetime import datetime as _dt
+    h = _dt.now().hour
+    if 0 <= h < 11 and not args.allow_partial:
+        print(f"当前 {h} 点处于早餐/凌晨时段，query-meals 只返回时段菜单（正餐品缺失）。"
+              "请在北京时间 11:00 后重跑，或加 --allow-partial 显式确认。"); sys.exit(1)
 
     token = os.environ.get("MCD_MCP_TOKEN", "")
     if not token:
